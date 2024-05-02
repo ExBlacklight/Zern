@@ -77,7 +77,7 @@ class Ticker:
             self.send_message(m1)
             self.send_message(m2)
 
-    def subscribe(self, tokens: Union[List[int], int],mode=MODE_STRING.modeLTPC):
+    def unsubscribe(self, tokens: Union[List[int], int],mode=MODE_STRING.modeLTPC):
         token_type = type(tokens)
         if not (token_type == list or token_type == int):
             raise Exception('tokens need to be in a list of integers or just an integer, \nexample 1:- [256265,260105]\nCurrent Type:{}'.format(type(tokens)))
