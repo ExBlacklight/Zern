@@ -63,7 +63,7 @@ trader.place_order(symbol, exchange, transaction_type, quantity)  #Places an ord
 - `transaction_type` (str): The type of transaction (e.g., 'BUY', 'SELL').
 - `quantity` (int): The quantity of securities to transact.
 
-### → HELPER FUNCTIONS
+## HELPER FUNCTIONS
 
 ```python
 get_bnf_expiries()  #Retrieves the expiry dates for BANKNIFTY derivatives.
@@ -82,3 +82,25 @@ get_derivatives_list()  #Retrieves the list of available derivatives.
 ```python
 get_current_expiries()  #Retrieves the expiry dates for BANKNIFTY derivative.
 ```
+
+## Live WebSocket Instructions (Important if you want to use Live Data)
+
+when `Trader` is initatiated, a Ticker is also instantiated with it and is subscribed to BANKNIFTY and NIFTY50 at the start. 
+
+the data is then stored in `trader.ticker.last_msg` and the time recieved is recorded in `trader.ticker.last_msg_time`
+
+the websocket updates these two variables `trader.ticker.last_msg` and `trader.ticker.last_msg_time`, so you you can keep a while loop fetching the variables as per your requirement.
+
+## Live Functions
+
+```python
+trader.ticker.subscribe(tokens: Union[List[int], int],mode=MODE_STRING.modeLTPC)  #subscribe the tokens as a list of instrument tokens or just an instrument token
+```
+- `tokens` (list , int): Expects a list of integers (instrument tokens) or just an integer (one intrument token)
+- `mode` (zern.utils.Types.MODE_STRING): Expects a MODE_STRING object which is usually a string. (inspect the zern.utils.Types for more information)
+
+```python
+trader.ticker.unsubscribe(self, tokens: Union[List[int], int],mode=MODE_STRING.modeLTPC)  #unsubscribes the tokens as a list of instrument tokens or just an instrument token
+```
+- `tokens` (list , int): Expects a list of integers (instrument tokens) or just an integer (one intrument token)
+- `mode` (zern.utils.Types.MODE_STRING): Expects a MODE_STRING object which is usually a string. (inspect the zern.utils.Types for more information)
