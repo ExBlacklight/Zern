@@ -1,6 +1,8 @@
 # Zern Class Documentation
 
 
+## Usage
+
 ```python
 from zern import Trader
 trader = Trader()
@@ -8,7 +10,7 @@ trader = Trader()
 
 The `Trader` class is used to initiate the trading process and interact with the trading platform. It provides various methods to retrieve data, manage orders, and access trading information.
 
-## Trader Class Methods
+## Trader Class Initialization
 
 ### `__init__(user_name, password, totp_key)`
 
