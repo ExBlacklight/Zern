@@ -18,7 +18,7 @@ trader.instruments #this will contain all the instrument tokens and symbols. fee
 ```
 
 
-### → Essential Methods
+## Essential Methods
 
 ```python
 trader.historical_data(instrument_token, start_date, end_date, interval='5minute')  #Retrieves historical data for a specific instrument within a specified time range.
@@ -82,9 +82,3 @@ get_derivatives_list()  #Retrieves the list of available derivatives.
 ```python
 get_current_expiries()  #Retrieves the expiry dates for BANKNIFTY derivative.
 ```
-#### `get_current_expiries(derivative_name)`
-
-Retrieves the current expiry dates for a specific derivative.
-
-- `derivative_name` (str): The name of the derivative.
-
