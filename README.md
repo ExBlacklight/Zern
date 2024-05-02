@@ -52,7 +52,7 @@ trader.get_profile()  #Retrieves the trader's profile information.
 ```python
 trader.check_app_sessions()  #Checks the active sessions for the trading application.
 ```
-
+### buy and sell order placement
 ```python
 trader.place_order(symbol, exchange, transaction_type, quantity)  #Places an order for a specific security. returns order_id 
 ```
