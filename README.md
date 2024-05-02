@@ -106,7 +106,7 @@ trader.ticker.unsubscribe(self, tokens: Union[List[int], int],mode=MODE_STRING.m
 
 ## getting TOTP key
 
-TOTP key can only be extracted from PC (mobile does not have it)
+**_TOTP key can only be extracted from PC (mobile does not have it)_**
 
 1) go to MyProfile  -> password and Security.
 2) ![final1](https://github.com/ExBlacklight/Zern/assets/37045428/6af536ff-11c2-4a2d-b6cd-93c1a72e861e)
