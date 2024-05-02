@@ -24,7 +24,9 @@ Retrieves historical data for a specific instrument within a specified time rang
 - `interval` (str, optional): The interval for data (default: '5minute').
 
 
-`get_orders()` - Retrieves the list of orders placed by the trader.
+```python
+get_orders()  # Retrieves the list of orders placed by the trader.
+```
 
 #### `get_positions()`
 
