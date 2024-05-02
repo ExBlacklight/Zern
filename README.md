@@ -14,9 +14,9 @@ Check above in requirements if you need to get the totp key
 
 ### Methods
 
-#### `historical_data(instrument_token, start_date, end_date, interval='5minute')`
-
-Retrieves historical data for a specific instrument within a specified time range.
+```python
+historical_data(instrument_token, start_date, end_date, interval='5minute')  #Retrieves historical data for a specific instrument within a specified time range.
+```
 
 - `instrument_token` (int): The unique identifier of the instrument.
 - `start_date` (str or datetime.datetime): The start date of the historical data (format: 'YYYY-MM-DD').
@@ -28,9 +28,9 @@ Retrieves historical data for a specific instrument within a specified time rang
 get_orders()  # Retrieves the list of orders placed by the trader.
 ```
 
-#### `get_positions()`
-
-Retrieves the current positions held by the trader.
+```python
+get_positions() #Retrieves the current positions held by the trader.
+```
 
 #### `get_holdings()`
 
