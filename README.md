@@ -1,5 +1,11 @@
 # Zern Class Documentation
 
+## Installation
+
+```
+pip install zern
+```
+
 ## Documentation
 
 ```python
