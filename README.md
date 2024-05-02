@@ -10,9 +10,15 @@ trader = Trader(user_name=YOUR_USERNAME,password=YOUR_PASSWORD,totp_key=YOUR_TOT
 
 The `Trader` class is used to initiate the trading process and interact with the trading platform. It provides various methods to retrieve data, manage orders, and access trading information.
 
-Check above in requirements if you need to get the totp key
+Check above in requirements if you need to get the totp key.
 
-### Essential Methods 
+#### → GET YOUR INSTRUMENTS TOKENS HERE (If Required)
+```python
+trader.instruments #this will contain all the instrument tokens and symbols. feel free to search it as per your requirements. the helper functions also use this variable.
+```
+
+
+### → Essential Methods
 
 ```python
 trader.historical_data(instrument_token, start_date, end_date, interval='5minute')  #Retrieves historical data for a specific instrument within a specified time range.
@@ -57,12 +63,7 @@ trader.place_order(symbol, exchange, transaction_type, quantity)  #Places an ord
 - `transaction_type` (str): The type of transaction (e.g., 'BUY', 'SELL').
 - `quantity` (int): The quantity of securities to transact.
 
-### HELPER FUNCTIONS
-
-#### GET YOUR INSTRUMENTS TOKENS HERE (If Required)
-```python
-trader.instruments #this will contain all the instrument tokens and symbols. feel free to search it as per your requirements. the helper functions also use this variable.
-```
+### → HELPER FUNCTIONS
 
 ```python
 get_bnf_expiries()  #Retrieves the expiry dates for BANKNIFTY derivatives.
