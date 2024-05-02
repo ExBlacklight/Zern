@@ -54,13 +54,21 @@ trader.check_app_sessions()  #Checks the active sessions for the trading applica
 ```
 
 ```python
-trader.place_order(symbol, exchange, transaction_type, quantity)  #Places an order for a specific security.
+trader.place_order(symbol, exchange, transaction_type, quantity)  #Places an order for a specific security. returns order_id 
 ```
-
+required arguments:
 - `symbol` (str): The symbol of the security.
-- `exchange` (str): The exchange where the security is listed.
-- `transaction_type` (str): The type of transaction (e.g., 'BUY', 'SELL').
+- `exchange` (str or zern.utils.Types.EXCHANGE): The exchange where the security is listed (e.g., zern.utils.Types.EXCHANGE.NSE, zern.utils.Types.EXCHANGE.NFO).
+- `transaction_type` (str or zern.utils.Types.TRANSACTION_TYPE): The type of transaction (e.g., zern.utils.Types.TRANSACTION_TYPE.BUY , zern.utils.Types.TRANSACTION_TYPE.SELL).
 - `quantity` (int): The quantity of securities to transact.
+optional keyword arguments
+- `variety` (str or zern.utils.Types.VARIETY=VARIETY.REGULAR): if the order is regular, iceberg or cover order etc (e.g. VARIETY.REGULAR)
+- `product`(str or zern.utils.Types.PRODUCT=PRODUCT.NRML): if order is normal or intraday (MIS) or cash n carry (CNC) (e.g. PRODUCT.NRML)
+- `order_type` (str or zern.utils.Types.ORDER_TYPE=ORDER_TYPE.MARKET): if order is a type of market or limit order (e.g. ORDER_TYPE.MARKET)
+- `validity` (str or zern.utils.Types.VALIDITY=VALIDITY.DAY): if order needs to be immediate (IOC) or in the day (DAY) (e.g. VALIDITY.DAY)
+- `price` (str='0') : if order is limit order, it needs to be parsed into string.
+- `trigger_price` (str='0') : if order is limit order, the price where it needs to trigger.
+- `stoploss` (str='0') : if order needs a stoploss, the price where the stoploss is to be set.
 
 ## HELPER FUNCTIONS
 
