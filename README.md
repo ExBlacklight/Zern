@@ -108,8 +108,8 @@ trader.ticker.unsubscribe(self, tokens: Union[List[int], int],mode=MODE_STRING.m
 
 TOTP key can only be extracted from PC (mobile does not have it)
 
-1) go to MyProfile  -> password and Security
-2)![final1](https://github.com/ExBlacklight/Zern/assets/37045428/6af536ff-11c2-4a2d-b6cd-93c1a72e861e)
-3)![final2](https://github.com/ExBlacklight/Zern/assets/37045428/672c1c1c-4aa0-4fa1-b75f-45a65469ff9e)
+1) go to MyProfile  -> password and Security.
+2) ![final1](https://github.com/ExBlacklight/Zern/assets/37045428/6af536ff-11c2-4a2d-b6cd-93c1a72e861e)
+3) ![final2](https://github.com/ExBlacklight/Zern/assets/37045428/672c1c1c-4aa0-4fa1-b75f-45a65469ff9e)
 4) copy key from there to your script and you can use it as TOTP key for automatic TOTP authentication.
 5) (Optional) if you already have TOTP enabled, you need to disable TOTP and do this process again to get the key, otherwise no other way.
