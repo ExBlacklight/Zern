@@ -12,16 +12,6 @@ The `Trader` class is used to initiate the trading process and interact with the
 
 Check above in requirements if you need to get the totp key
 
-## Trader Class Initialization
-
-### `__init__(user_name, password, totp_key)`
-
-Initializes a new instance of the `Trader` class.
-
-- `user_name` (str): User's username for authentication.
-- `password` (str): User's password for authentication.
-- `totp_key` (str): User's TOTP (Time-based One-Time Password) key for two-factor authentication.
-
 ### Methods
 
 #### `historical_data(instrument_token, start_date, end_date, interval='5minute')`
@@ -33,9 +23,8 @@ Retrieves historical data for a specific instrument within a specified time rang
 - `end_date` (str or datetime.datetime): The end date of the historical data (format: 'YYYY-MM-DD').
 - `interval` (str, optional): The interval for data (default: '5minute').
 
-#### `get_orders()`
 
-Retrieves the list of orders placed by the trader.
+`get_orders()` Retrieves the list of orders placed by the trader.
 
 #### `get_positions()`
 
