@@ -9,7 +9,7 @@ trader = Trader(user_name=YOUR_USERNAME,password=YOUR_PASSWORD,totp_key=YOUR_TOT
 
 The `Trader` class is used to initiate the trading process and interact with the trading platform. It provides various methods to retrieve data, manage orders, and access trading information.
 
-Check above in requirements if you need to get the totp key.
+Check below in TOTP section if you need to get the totp key.
 
 #### → GET YOUR INSTRUMENTS TOKENS HERE (If Required)
 ```python
