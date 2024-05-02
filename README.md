@@ -1,7 +1,7 @@
 # Zern Class Documentation
 
 
-## Usage
+## Documentation
 
 ```python
 from zern import Trader
