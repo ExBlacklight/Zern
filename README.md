@@ -1,5 +1,7 @@
 # Zern Class Documentation
 
+This is a free library, no subscriptions required to use this library.
+
 ## Installation
 
 ```
