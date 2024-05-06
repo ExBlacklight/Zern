@@ -2,7 +2,7 @@
 from zern.Core.session import Session
 from datetime import datetime,date,time,timedelta
 from zern.utils.OrderedList import OrderedList
-from zern.Core.websocket.ticker import Ticker
+from zern.Core.websocket_connection.ticker import Ticker
 from zern.utils.Types import PRODUCT,VARIETY,TRANSACTION_TYPE,ORDER_TYPE,VALIDITY,EXCHANGE
 
 
@@ -15,8 +15,8 @@ class Trader:
         '''
         self.session = Session(user_name,password,totp_key)
         self.instruments = self.session.instruments
-        self.startTicker()
         self.ticker = None
+        self.startTicker()
     
     def format_date(self,value):
         if isinstance(value,str):
@@ -94,7 +94,7 @@ class Trader:
         return self.session.request(url=url,method=Session.TYPE_POST,data=payload)['data']
 
     def startTicker(self):
-        self.ticker_ws = Ticker(session=self.session)
+        self.ticker = Ticker(session=self.session)
     
     def get_bnf_expiries(self):
         return list(self.instruments['derivatives']['BANKNIFTY']['derivatives'].keys())
