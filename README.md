@@ -7,10 +7,11 @@ This is a free library, no subscriptions required to use this library.
 ```
 pip install zern
 ```
-2) setup from github:
-```python
->>> python3 -m build
->>> pip install ./dist/zern-0.0.12.tar.gz
+2) clone the repository, build and install from github:
+-> make sure the you are installing using the build (.tar.gz file)
+```
+python3 -m build
+pip install ./dist/zern-0.0.12.tar.gz
 ```
 
 ## Documentation
