@@ -105,6 +105,10 @@ class Trader:
     def get_derivatives_list(self):
         return list(self.instruments['derivatives'].keys())
 
-    def get_current_expiries(self,derivative_name):
-        current_expiry = self.get_bnf_expiries()[0]
+    def get_current_expiries_strikes(self,derivative_name):
+        current_expiry = self.get_expiries(derivative_name)
         return self.instruments['derivatives'][derivative_name]['derivatives'][current_expiry[0]]['options']
+    
+    def get_bnf_current_expiry_strikes(self):
+        current_expiry = self.get_bnf_expiries()
+        return self.instruments['derivatives']['BANKNIFTY']['derivatives'][current_expiry[0]]['options']
