@@ -3,9 +3,14 @@
 This is a free library, no subscriptions required to use this library.
 
 ## Installation
-
+1) pip install method
 ```
 pip install zern
+```
+2) setup from github:
+```python
+>>> python3 -m build
+>>> pip install ./dist/zern-0.0.12.tar.gz
 ```
 
 ## Documentation
