@@ -1,5 +1,5 @@
-from zern.Core.trader import Trader
+from .core.trader import Trader
 
 __all__ = [
-    Trader
+    'Trader'
 ]

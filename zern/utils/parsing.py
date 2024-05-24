@@ -1,6 +1,6 @@
 import urllib.parse
 import datetime
-from zern.utils.Types import MODE_VALUES,SEGMENT
+from .Types import MODE_VALUES, SEGMENT
 
 def encodeURIComponent(string):
     o = {"!": "%21", "'": "%27", "(": "%28", ")": "%29", "~": "%7E", "%20": "+", "%00": "\0"}
