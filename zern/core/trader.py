@@ -1,7 +1,7 @@
 
 from .session import Session
 from ..utils.OrderedList import OrderedList
-from ..utils.Types import PRODUCT,VARIETY,TRANSACTION_TYPE,ORDER_TYPE,VALIDITY,EXCHANGE
+from ..utils.Types import PRODUCT,VARIETY,TRANSACTION_TYPE,ORDER_TYPE,VALIDITY,EXCHANGE,INTERVAL
 from .websocket_connection.ticker import Ticker
 from datetime import datetime,date,time,timedelta
 
@@ -15,6 +15,7 @@ class Trader:
         '''
         self.session = Session(user_name,password,totp_key)
         self.instruments = self.session.instruments
+        self.instrument_details = self.session.ins_details_cache
         self.ticker = None
         self.startTicker()
     
@@ -112,3 +113,66 @@ class Trader:
     def get_bnf_current_expiry_strikes(self):
         current_expiry = self.get_bnf_expiries()
         return self.instruments['derivatives']['BANKNIFTY']['derivatives'][current_expiry[0]]['options']
+    
+    def get_instrument_token_equity(self,symbol):
+        symbol = symbol.upper()
+        try:
+            instrument = self.instruments['underlyer_list']['NSE']['NSE']['EQ'][symbol]
+        except KeyError:
+            raise Exception(f'{symbol} not found in the list of instruments list, please check the symbol correctly again')
+        return instrument['instrument_token']
+
+    def get_instrument_token_option(self,symbol,expiry,strike,strike_type,no_check=False):
+        def check(strike):
+            if type(strike) == int:
+                strike = '{}.0'.format(strike)
+            elif type(strike) == float:
+                strike = '{}.0'.format(int(strike))
+            elif type(strike) == str:
+                if strike[-2:] == '.0':
+                    strike = strike
+                else:
+                    strike = '{}.0'.format(int(strike))
+            return strike
+        
+        symbol = symbol.upper()
+        strike = check(strike)
+        strike_type = strike_type.upper()
+        if not no_check:
+            try:
+                instrument = self.instruments['derivatives'][symbol]
+            except KeyError:
+                raise Exception(f'{symbol} not found in the list of instruments list, please check the symbol correctly again')
+            try:
+                instrument = instrument['derivatives'][expiry]
+            except KeyError:
+                raise Exception(f'{expiry} not found in the list of {symbol} instruments list, please check the symbol correctly again')
+            try:
+                instrument = instrument['options'][strike]
+            except KeyError:
+                raise Exception(f'{strike} not found in the expiry list ({expiry}) of {symbol} instruments list, please check the symbol correctly again')
+            try:
+                instrument = instrument[strike_type]
+            except KeyError:
+                raise Exception(f'please check strike type')
+            return instrument['instrument_token']
+        else:
+            return self.instruments['derivatives'][symbol]['derivatives'][expiry]['options'][strike][strike_type]['instrument_token']
+
+    def get_instrument_token_index(self,symbol):
+        symbol = symbol.upper()
+        try:
+            instrument = self.instruments['underlyer_list']['NSE']['NSE-INDICES']['EQ'][symbol]
+        except KeyError:
+            raise Exception(f'{symbol} not found in the list of instruments list, please check the symbol correctly again')
+        return instrument['instrument_token']
+    
+    def get_previous_data(self,instrument_token,days=0,interval=INTERVAL.MINUTE_15):
+        today = datetime.now()
+        start_date = today - timedelta(days=days)
+        return self.historical_data(instrument_token=instrument_token,start_date=start_date,end_date=today,interval=interval)
+    
+    def get_todays_data(self,instrument_token):
+        current_day = datetime.now().date()
+        return self.historical_data(instrument_token=instrument_token,start_date=current_day,end_date=current_day,interval=INTERVAL.MINUTE_15)
+    

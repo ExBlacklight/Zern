@@ -80,7 +80,15 @@ class Session:
             'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
         }
         response = requests.get('https://oxide.sensibull.com/v1/compute/cache/insights/instrument_metacache/1', headers=new_headers)
+        next_resp = requests.get('https://oxide.sensibull.com/v1/compute/cache/insights/underlying_instruments', headers=new_headers)
         print('getting instrument tokens')
-        self.instruments = response.json()
+        if response.status_code == 200:
+            resp = response.json()
+            del resp['etag']
+            self.instruments = resp
+            self.ins_details_cache = next_resp.json()['data']
+        else:
+            raise Exception('Failed to get instruments')
+        
         #sleep(2)
         

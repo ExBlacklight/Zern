@@ -102,3 +102,17 @@ KEYS = namedtuple('keyOptions',['subscribe','mode','unsubscribe'])(
     mode='mode',
     unsubscribe='unsubscribe'
 )
+
+INTERVAL = namedtuple('intervalOptions',['MINUTE','MINUTE_2','MINUTE_3','MINUTE_5','MINUTE_10','MINUTE_15','MINUTE_30','HOUR','HOUR_2','HOUR_3','DAY'])(
+    MINUTE='minute',
+    MINUTE_2='2minute',
+    MINUTE_3='3minute',
+    MINUTE_5='5minute',
+    MINUTE_10='10minute',
+    MINUTE_15='15minute',
+    MINUTE_30='30minute',
+    HOUR='60minute',
+    HOUR_2='2hour',
+    HOUR_3='3hour',
+    DAY='day'
+)
