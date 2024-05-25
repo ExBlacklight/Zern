@@ -1,18 +1,8 @@
 # Zern Class Documentation
 
-This is a free library, no subscriptions required to use this library.
+This is a free library. This doesn't require any subscription to use. 
 
-## Installation
-1) pip install method
-```
-pip install zern
-```
-2) clone the repository, build and install from github:
--> make sure the you are installing using the correct build (.tar.gz file)
-```
-python3 -m build
-pip install ./dist/zern-0.0.12.tar.gz
-```
+Disclaimer: Please dont overload the server.
 
 ## Documentation
 
@@ -28,6 +18,10 @@ Check below in TOTP section if you need to get the totp key.
 #### → GET YOUR INSTRUMENTS TOKENS HERE (If Required)
 ```python
 trader.instruments #this will contain all the instrument tokens and symbols. feel free to search it as per your requirements. the helper functions also use this variable.
+```
+
+```python
+trader.instrument_details #this is cache of all the instruments, can check the prices and many things of many instruments at a time without having to overload the server.
 ```
 
 
@@ -70,12 +64,12 @@ trader.check_app_sessions()  #Checks the active sessions for the trading applica
 ```python
 trader.place_order(symbol, exchange, transaction_type, quantity)  #Places an order for a specific security. returns order_id 
 ```
-##### required arguments:
+required arguments:
 - `symbol` (str): The symbol of the security.
 - `exchange` (str or zern.utils.Types.EXCHANGE): The exchange where the security is listed (e.g., zern.utils.Types.EXCHANGE.NSE, zern.utils.Types.EXCHANGE.NFO).
 - `transaction_type` (str or zern.utils.Types.TRANSACTION_TYPE): The type of transaction (e.g., zern.utils.Types.TRANSACTION_TYPE.BUY , zern.utils.Types.TRANSACTION_TYPE.SELL).
 - `quantity` (int): The quantity of securities to transact.
-##### optional keyword arguments:
+optional keyword arguments
 - `variety` (str or zern.utils.Types.VARIETY=VARIETY.REGULAR): if the order is regular, iceberg or cover order etc (e.g. VARIETY.REGULAR)
 - `product`(str or zern.utils.Types.PRODUCT=PRODUCT.NRML): if order is normal or intraday (MIS) or cash n carry (CNC) (e.g. PRODUCT.NRML)
 - `order_type` (str or zern.utils.Types.ORDER_TYPE=ORDER_TYPE.MARKET): if order is a type of market or limit order (e.g. ORDER_TYPE.MARKET)
@@ -87,21 +81,46 @@ trader.place_order(symbol, exchange, transaction_type, quantity)  #Places an ord
 ## HELPER FUNCTIONS
 
 ```python
-get_bnf_expiries()  #Retrieves the expiry dates for BANKNIFTY derivatives.
+trader.get_bnf_expiries()  #Retrieves the expiry dates for BANKNIFTY derivatives.
 ```
 
 ```python
-get_expiries(derivative_name)  #Retrieves the expiry dates for a specific derivative.
+trader.get_expiries(derivative_name)  #Retrieves the expiry dates for a specific derivative.
 ```
 
 - `derivative_name` (str): The name of the derivative.
 
 ```python
-get_derivatives_list()  #Retrieves the list of available derivatives.
+trader.get_derivatives_list()  #Retrieves the list of available derivatives.
 ```
 
 ```python
-get_current_expiries()  #Retrieves the expiry dates for BANKNIFTY derivative.
+trader.get_current_expiries()  #Retrieves the expiry dates for BANKNIFTY derivative.
+```
+
+## EASY INSTRUMENT TOKEN RETRIEVAL FUNCTIONS
+
+```python
+trader.get_instrument_token_equity(symbol) #retrieve instrument token for a given equity symbol ex: 'INFY'
+```
+
+```python
+trader.get_instrument_token_option(symbol,expiry,strike,strike_type) #retrieve instrument token for a given derivative symbol.
+#trader.get_instrument_token_option('BANKNIFTY','2024-05-29','49000.0','CE')
+```
+
+```python
+trader.get_instrument_token_index(symbol) #retrieve instrument token for a given index symbol ex: 'BANKNIFTY'
+```
+
+## EASY HISTORICAL DATA FUNCTIONS
+
+```python
+trader.get_previous_data(instrument_token,days=0,interval=INTERVAL.MINUTE_15) # function used to get an X number of days data from current day
+```
+
+```python
+trader.get_todays_data(instrument_token)  # function used to get current day data only
 ```
 
 ## Live WebSocket Instructions (Important if you want to use Live Data)
