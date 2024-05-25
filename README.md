@@ -2,7 +2,7 @@
 
 This is a free library. This doesn't require any subscription to use. 
 
-Disclaimer: Please dont overload the server.
+### __Disclaimer: Please dont overload the server.__
 
 ## Documentation
 
