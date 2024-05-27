@@ -1,5 +1,11 @@
 from datetime import datetime
 import numpy as np
+import pickle
+
+def load_dict(path):
+    with open(path, 'rb') as f:
+        data = pickle.load(f)
+    return OrderedList(data)
 
 class OrderedList:
     class _ILOC:
@@ -74,9 +80,14 @@ class OrderedList:
         data_head = {key: self._data[key] for key in list_of_columns}
         return OrderedList(data_head)
     
+    @property
     def values(self):
         data_head = [self._data[key] for key in self._data.keys()]
-        return np.array(data_head.T)
+        return np.array(data_head).T
+    
+    def save(self, path):
+        with open(path, 'wb') as f:
+            pickle.dump(self._data, f)
     
     def __len__(self):
         return len(self._data['datetime'])

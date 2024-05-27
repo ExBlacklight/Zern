@@ -1,5 +1,7 @@
 from .core.trader import Trader
+from .utils.OrderedList import load_dict
 
 __all__ = [
-    'Trader'
+    'Trader',
+    'load_dict'
 ]

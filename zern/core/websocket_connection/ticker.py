@@ -63,7 +63,7 @@ class Ticker:
         ws.send(json.dumps(m2))
     
     def send_message(self,message):
-        self.__private_websocket_connection.send(json.dumps(self.__private_input_message))
+        self.__private_websocket_connection.send(json.dumps(message))
     
     def subscribe(self, tokens: Union[List[int], int],mode=MODE_STRING.modeLTPC):
         token_type = type(tokens)

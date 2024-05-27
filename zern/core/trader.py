@@ -37,35 +37,64 @@ class Trader:
             'from': self.format_date(start_date),
             'to': self.format_date(end_date),
         }
-        return OrderedList(self.session.request(url=url,method=Session.TYPE_GET,params=params)['data']['candles'])
+        response = self.session.request(url=url,method=Session.TYPE_GET,params=params)
+        if response['status'] == 'success':
+            return OrderedList(response['data']['candles'])
+        else:
+            raise Exception(response['message'])
     
     def get_orders(self):
         url = 'https://kite.zerodha.com/oms/orders'
-        return self.session.request(url=url,method=Session.TYPE_GET)['data']
+        response = self.session.request(url=url,method=Session.TYPE_GET)
+        if response['status'] == 'success':
+            return response['data']
+        else:
+            raise Exception(response['message'])
     
     def get_positions(self):
         url = 'https://kite.zerodha.com/oms/portfolio/positions'
-        return self.session.request(url=url,method=Session.TYPE_GET)['data']
+        response = self.session.request(url=url,method=Session.TYPE_GET)
+        if response['status'] == 'success':
+            return response['data']
+        else:
+            raise Exception(response['message'])
+        
     
     def get_holdings(self):
         url = 'https://kite.zerodha.com/oms/portfolio/holdings'
-        return self.session.request(url=url,method=Session.TYPE_GET)['data']
+        response = self.session.request(url=url,method=Session.TYPE_GET)
+        if response['status'] == 'success':
+            return response['data']
+        else:
+            raise Exception(response['message'])
     
     def get_margins(self):
         url = 'https://kite.zerodha.com/oms/user/margins'
-        return self.session.request(url=url,method=Session.TYPE_GET)['data']
+        response = self.session.request(url=url,method=Session.TYPE_GET)
+        if response['status'] == 'success':
+            return response['data']
+        else:
+            raise Exception(response['message'])
     
     def get_profile(self):
         url = 'https://kite.zerodha.com/oms/user/profile/full'
-        return self.session.request(url=url,method=Session.TYPE_GET)['data']
+        response = self.session.request(url=url,method=Session.TYPE_GET)
+        if response['status'] == 'success':
+            return response['data']
+        else:
+            raise Exception(response['message'])
     
     def check_app_sessions(self):
         url = 'https://kite.zerodha.com/api/user/app_sessions'
-        return self.session.request(url=url,method=Session.TYPE_GET)['data']
+        response = self.session.request(url=url,method=Session.TYPE_GET)
+        if response['status'] == 'success':
+            return response['data']
+        else:
+            raise Exception(response['message'])
     
     def place_order(self,symbol,exchange,transaction_type,quantity,
                     variety=VARIETY.REGULAR,
-                    product=PRODUCT.NRML,
+                    product=PRODUCT.CNC,
                     order_type=ORDER_TYPE.MARKET,
                     validity=VALIDITY.DAY,
                     price='0',
@@ -92,7 +121,11 @@ class Trader:
             'user_id': self.session.user_name
         }
         url = 'https://kite.zerodha.com/oms/orders/regular'
-        return self.session.request(url=url,method=Session.TYPE_POST,data=payload)['data']
+        response = self.session.request(url=url,method=Session.TYPE_POST,data=payload)
+        if response['status'] == 'success':
+            return response['data']
+        elif response['status'] == 'error':
+            raise Exception(response['message'])
 
     def startTicker(self):
         self.ticker = Ticker(session=self.session)
@@ -120,7 +153,7 @@ class Trader:
             instrument = self.instruments['underlyer_list']['NSE']['NSE']['EQ'][symbol]
         except KeyError:
             raise Exception(f'{symbol} not found in the list of instruments list, please check the symbol correctly again')
-        return instrument['instrument_token']
+        return {'tradingsymbol': instrument['tradingsymbol'],'instrument_token': instrument['instrument_token']}
 
     def get_instrument_token_option(self,symbol,expiry,strike,strike_type,no_check=False):
         def check(strike):
@@ -155,18 +188,35 @@ class Trader:
                 instrument = instrument[strike_type]
             except KeyError:
                 raise Exception(f'please check strike type')
-            return instrument['instrument_token']
+            return {'tradingsymbol': instrument['tradingsymbol'],'instrument_token': instrument['instrument_token']}
         else:
-            return self.instruments['derivatives'][symbol]['derivatives'][expiry]['options'][strike][strike_type]['instrument_token']
+            ts = self.instruments['derivatives'][symbol]['derivatives'][expiry]['options'][strike][strike_type]['tradingsymbol']
+            insToken = self.instruments['derivatives'][symbol]['derivatives'][expiry]['options'][strike][strike_type]['instrument_token']
+            return {'tradingsymbol': ts,'instrument_token': insToken}
 
     def get_instrument_token_index(self,symbol):
         symbol = symbol.upper()
         try:
-            instrument = self.instruments['underlyer_list']['NSE']['NSE-INDICES']['EQ'][symbol]
+            try:
+                instrument = self.instruments['underlyer_list']['NSE']['NSE-INDICES']['EQ'][symbol]
+            except:
+                instrument = self.instruments['underlyer_list']['BSE']['BSE-INDICES']['EQ'][symbol]
         except KeyError:
             raise Exception(f'{symbol} not found in the list of instruments list, please check the symbol correctly again')
-        return instrument['instrument_token']
+        return {'tradingsymbol': instrument['tradingsymbol'],'instrument_token': instrument['instrument_token']}
     
+    def get_instrument_token_future(self,symbol,expiry):
+        symbol = symbol.upper()
+        try:
+            instrument = self.instruments['derivatives'][symbol]
+        except KeyError:
+            raise Exception(f'{symbol} not found in the list of instruments list, please check the symbol correctly again')
+        try:
+            instrument = instrument['derivatives'][expiry]
+        except KeyError:
+            raise Exception(f'{expiry} not found in the list of {symbol} instruments list, please check the symbol correctly again')
+        return {'tradingsymbol': instrument['tradingsymbol'],'instrument_token': instrument['instrument_token']}
+
     def get_previous_data(self,instrument_token,days=0,interval=INTERVAL.MINUTE_15):
         today = datetime.now()
         start_date = today - timedelta(days=days)

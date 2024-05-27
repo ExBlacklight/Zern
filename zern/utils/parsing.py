@@ -63,7 +63,7 @@ def parse_binary(data):
     if len(data) == 1:
         return None
     packets = split_packets(data)
-    result = []
+    result = {}
     for packet in packets:
         token = buf2Uint32(packet[:4])
         segment = token & 255
@@ -75,12 +75,12 @@ def parse_binary(data):
         elif not (segment != SEGMENT.segmentBseCD and segment != SEGMENT.segmentNseCOM):
             divisor = 1e4
         if len(packet) == 8:
-            result.append({
+            result[str(token)] = {
                 'mode': MODE_VALUES.modeLTP,
                 'isTradeable': True,
                 'token': token,
                 'lastPrice': buf2Uint32(packet[4:8]) / divisor
-            })
+            }
         elif len(packet) == 12:
             entry = {
                 'mode': MODE_VALUES.modeLTPC,
@@ -90,7 +90,7 @@ def parse_binary(data):
                 'closePrice': buf2Uint32(packet[8:12]) / divisor
             }
             entry.update(calculate_change(entry))
-            result.append(entry)
+            result[str(token)] = entry
         elif len(packet) in [28, 32]:
             entry = {
                 'mode': MODE_VALUES.modeFull,
@@ -103,7 +103,7 @@ def parse_binary(data):
                 'closePrice': buf2Uint32(packet[20:24]) / divisor
             }
             entry.update(calculate_change(entry))
-            result.append(entry)
+            result[str(token)] = entry
         elif len(packet) == 492:
             entry = {
                 'mode': MODE_VALUES.modeFull,
@@ -125,7 +125,7 @@ def parse_binary(data):
                     'orders': orders
                 })
                 depth_data = depth_data[12:]
-            result.append(entry)
+            result[str(token)] = entry
         elif len(packet) in [164, 184]:
             entry = {
                 'mode': MODE_VALUES.modeQuote,
@@ -164,5 +164,6 @@ def parse_binary(data):
                     'orders': orders
                 })
                 depth_data = depth_data[12:]
-            result.append(entry)
+            #result.append(entry)
+            result[str(token)] = entry
     return result

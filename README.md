@@ -4,6 +4,86 @@ This is a free library. This doesn't require any subscription to use.
 
 ### __Disclaimer: Please dont overload the server.__
 
+## SAMPLE SCRIPTS
+
+1) download data
+
+```python
+from zern import Trader
+from credentials import user_name, password, totp_key
+
+#initiate trader
+trader = Trader(user_name=user_name,password=password,totp_key=totp_key)
+
+#retrieve 'INFOSYS' insrtrument token and get previous 10 days data
+token = trader.get_instrument_token_equity('infy')
+insToken = token['instrument_token']
+df = trader.get_previous_data(insToken,days=10)
+
+trader
+
+# save the data 
+df.save('infy.dict')
+```
+
+2) using realtime data and place orders
+
+```python
+from zern import Trader
+from credentials import user_name, password, totp_key
+
+trader = Trader(user_name=user_name,password=password,totp_key=totp_key)
+
+sleep(1)
+
+token = trader.get_instrument_token_equity('infy')
+insToken = token['instrument_token']
+
+# you need to subscribe to this ticker process for live data
+trader.ticker.subscribe(insToken)
+
+# use loops or threads (preferably daemon threads) to fetch the ticker.last_msg from the ticker
+# Note: 'trader.ticker.last_msg' and 'trader.ticker.last_msg_time' are the only 
+#       two variables which are updated in the background
+while True:
+    try:
+        print(trader.ticker.last_msg[str(insToken)])
+    except:
+        pass
+    sleep(1)
+
+```
+
+3) placing a trade
+
+```python
+from zern import Trader
+from time import sleep
+from credentials import user_name, password, totp_key
+
+trader = Trader(user_name=user_name,password=password,totp_key=totp_key)
+
+token = trader.get_instrument_token_equity('infy')
+df = trader.get_previous_data(token['instrument_token'],days=10)
+
+# import required Types for special use cases
+from zern.utils.Types import EXCHANGE,ORDER_TYPE,PRODUCT,TRANSACTION_TYPE,VARIETY,VALIDITY
+
+
+# Place order
+# equities need to be in PRODUCT.CNC for long or PRODUCT.MIS for intraday
+# options need to be in PRODUCT.NRML for long or PRODUCT.MIS for intraday
+# futures need to be in PRODUCT.NRML for long or PRODUCT.MIS for intraday
+#
+# refer the source code for more specific orders like limit orders, stoploss orders etc
+# 
+trader.place_order(token['tradingsymbol'],EXCHANGE.NSE,TRANSACTION_TYPE.BUY,1,PRODUCT.CNC)
+sleep(5)
+trader.place_order(token['tradingsymbol'],EXCHANGE.NSE,TRANSACTION_TYPE.SELL,1,PRODUCT.CNC)
+```
+
+**Refer the documentation for setting up options and futures trades**
+
 ## Documentation
 
 ```python
@@ -123,6 +203,27 @@ trader.get_previous_data(instrument_token,days=0,interval=INTERVAL.MINUTE_15) # 
 trader.get_todays_data(instrument_token)  # function used to get current day data only
 ```
 
+## INBUILT DATAFRAME (ORDERED LIST)
+
+The data from the functions is of the type (zern.utils.OrderedList.OrderedList). this is a discount version of pandas only used to view the data. if you want to convert it to Pandas DataFrame use:
+
+```python
+ins = trader.get_instrument_token_equity('infy')
+ordered_list = trader.get_previous_data(ins,days=10)
+pandas_df = pd.DataFrame.from_dict(ordered_list._data)
+```
+
+this ordered list can also be saved and loaded using:
+
+```python
+from zern import load_dict
+
+ordered_list = trader.get_previous_data(ins,days=10)
+ordered_list.save(path)  # save the dataframe
+
+loaded_ordered_list = load_dict(path) #load the dataframe
+```
+
 ## Live WebSocket Instructions (Important if you want to use Live Data)
 
 when `Trader` is initatiated, a Ticker is also instantiated with it and is subscribed to BANKNIFTY and NIFTY50 at the start. 
@@ -154,3 +255,84 @@ trader.ticker.unsubscribe(self, tokens: Union[List[int], int],mode=MODE_STRING.m
 3) ![final2](https://github.com/ExBlacklight/Zern/assets/37045428/672c1c1c-4aa0-4fa1-b75f-45a65469ff9e)
 4) copy key from there to your script and you can use it as TOTP key for automatic TOTP authentication.
 5) (Optional) if you already have TOTP enabled, you need to disable TOTP and do this process again to get the key, otherwise no other way.
+
+
+## SAMPLE SCRIPTS
+
+1) download data
+
+```python
+from zern import Trader
+from credentials import user_name, password, totp_key
+
+#initiate trader
+trader = Trader(user_name=user_name,password=password,totp_key=totp_key)
+
+#retrieve 'INFOSYS' insrtrument token and get previous 10 days data
+token = trader.get_instrument_token_equity('infy')
+insToken = token['instrument_token']
+df = trader.get_previous_data(insToken,days=10)
+
+trader
+
+# save the data 
+df.save('infy.dict')
+```
+
+2) using realtime data and place orders
+
+```python
+from zern import Trader
+from credentials import user_name, password, totp_key
+
+trader = Trader(user_name=user_name,password=password,totp_key=totp_key)
+
+sleep(1)
+
+token = trader.get_instrument_token_equity('infy')
+insToken = token['instrument_token']
+
+# you need to subscribe to this ticker process for live data
+trader.ticker.subscribe(insToken)
+
+# use loops or threads (preferably daemon threads) to fetch the ticker.last_msg from the ticker
+# Note: 'trader.ticker.last_msg' and 'trader.ticker.last_msg_time' are the only 
+#       two variables which are updated in the background
+while True:
+    try:
+        print(trader.ticker.last_msg[str(insToken)])
+    except:
+        pass
+    sleep(1)
+
+```
+
+3) placing a trade
+
+```python
+from zern import Trader
+from time import sleep
+from credentials import user_name, password, totp_key
+
+trader = Trader(user_name=user_name,password=password,totp_key=totp_key)
+
+token = trader.get_instrument_token_equity('infy')
+df = trader.get_previous_data(token['instrument_token'],days=10)
+
+# import required Types for special use cases
+from zern.utils.Types import EXCHANGE,ORDER_TYPE,PRODUCT,TRANSACTION_TYPE,VARIETY,VALIDITY
+
+
+# Place order
+# equities need to be in PRODUCT.CNC for long or PRODUCT.MIS for intraday
+# options need to be in PRODUCT.NRML for long or PRODUCT.MIS for intraday
+# futures need to be in PRODUCT.NRML for long or PRODUCT.MIS for intraday
+#
+# refer the source code for more specific orders like limit orders, stoploss orders etc
+# 
+trader.place_order(token['tradingsymbol'],EXCHANGE.NSE,TRANSACTION_TYPE.BUY,1,PRODUCT.CNC)
+sleep(5)
+trader.place_order(token['tradingsymbol'],EXCHANGE.NSE,TRANSACTION_TYPE.SELL,1,PRODUCT.CNC)
+```
+
+**Refer the documentation for setting up options and futures trades**
