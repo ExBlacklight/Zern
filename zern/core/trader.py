@@ -138,6 +138,9 @@ class Trader:
     
     def get_derivatives_list(self):
         return list(self.instruments['derivatives'].keys())
+    
+    def get_strikes(self,derivative_name,expiry):
+        return list(self.instruments['derivatives'][derivative_name]['derivatives'][expiry]['options'].keys())
 
     def get_current_expiries_strikes(self,derivative_name):
         current_expiry = self.get_expiries(derivative_name)

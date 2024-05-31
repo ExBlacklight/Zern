@@ -4,6 +4,24 @@ This is a free library. This doesn't require any subscription to use.
 
 ### __Disclaimer: Please dont overload the server.__
 
+## INSTALLATION
+
+1) get it the pip way 
+```
+pip install zern
+```
+
+2) build from here using build tool
+```
+git clone https://github.com/ExBlacklight/Zern.git
+cd Zern
+pip install build
+python -m build
+pip install "./dist/zern-0.0.17.tar.gz"
+```
+
+**You can convert the inbuilt DataFrame to pandas. check it in the "INBUILT DATAFRAME" Section below.**
+
 ## SAMPLE SCRIPTS
 
 1) download data
@@ -159,6 +177,7 @@ optional keyword arguments
 - `stoploss` (str='0') : if order needs a stoploss, the price where the stoploss is to be set.
 
 ## HELPER FUNCTIONS
+These are just helper functions which only use the cached variable which is "trader.instruments". if you have further requirements, please use the variable itself to get your own data as per your need.
 
 ```python
 trader.get_bnf_expiries()  #Retrieves the expiry dates for BANKNIFTY derivatives.
@@ -176,6 +195,10 @@ trader.get_derivatives_list()  #Retrieves the list of available derivatives.
 
 ```python
 trader.get_current_expiries()  #Retrieves the expiry dates for BANKNIFTY derivative.
+```
+
+```python
+trader.get_strikes(derivative_name,expiry)  # retrieves the strikes for the derivative of the particular expiry
 ```
 
 ## EASY INSTRUMENT TOKEN RETRIEVAL FUNCTIONS

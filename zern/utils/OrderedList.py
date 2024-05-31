@@ -77,7 +77,10 @@ class OrderedList:
         return OrderedList(data_head)
     
     def __getitem__(self,list_of_columns):
-        data_head = {key: self._data[key] for key in list_of_columns}
+        if type(list_of_columns) is str:
+            data_head = {list_of_columns: self._data[list_of_columns]}
+        elif type(list_of_columns) is list:
+            data_head = {key: self._data[key] for key in list_of_columns}
         return OrderedList(data_head)
     
     @property
