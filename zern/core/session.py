@@ -35,7 +35,14 @@ class Session:
         print('login: waiting for almost 5 seconds')
         login_data = {'user_id': self.user_name,'password': self._private__password}
         resp = requests.post(self._login_url, cookies=self.cookies, headers=self.headers, data=login_data)
-        request_id = resp.json()['data']['request_id']
+        if resp.status_code == 200:
+            request_id = resp.json()['data']['request_id']
+        else:
+            try:
+                obj = resp.json()
+            except:
+                raise Exception(f'error status {resp.status_code}: issue in the authentication code')
+            raise Exception('{}: {}'.format(obj['status'],obj['message']))
         sleep(random.random())
         print('auto TOTP: waiting for almost 5 seconds')
         totp_data = {'user_id': self.user_name,'request_id': request_id,'twofa_value': pyotp.TOTP(self.totp_key).now(),'twofa_type': 'totp','skip_session': ''}
