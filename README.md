@@ -17,7 +17,7 @@ git clone https://github.com/ExBlacklight/Zern.git
 cd Zern
 pip install build
 python -m build
-pip install "./dist/zern-0.0.17.tar.gz"
+pip install "./dist/zern-0.0.18.tar.gz"
 ```
 
 **You can convert the inbuilt DataFrame to pandas. check it in the "INBUILT DATAFRAME" Section below.**
