@@ -144,13 +144,15 @@ def parse_binary(data):
             }
             entry.update(calculate_change(entry))
             if len(packet) == 184:
-                offset = 44
+                # 184-byte packet: OI data at 44-60, exchange timestamp at 60-64, depth at 64-184
                 entry['lastTradedTime'] = date_to_string(datetime.datetime.fromtimestamp(buf2Uint32(packet[44:48])))
                 entry['oi'] = buf2Uint32(packet[48:52])
                 entry['oiDayHigh'] = buf2Uint32(packet[52:56])
                 entry['oiDayLow'] = buf2Uint32(packet[56:60])
+                offset = 64  # Depth starts after OI data + exchange timestamp
             else:
-                offset = 64
+                # 164-byte packet: no OI data, depth starts right after closePrice
+                offset = 44
             depth_data = packet[offset:offset+120]
             entry['mode'] = MODE_VALUES.modeFull
             entry['depth'] = {'buy': [], 'sell': []}
