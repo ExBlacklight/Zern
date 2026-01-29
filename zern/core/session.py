@@ -16,18 +16,18 @@ class Session:
         self._app_uuid = str(uuid.uuid4())
 
         # Headers for initial page load (login)
+        # Note: Don't set accept-encoding manually - let requests handle it automatically
         self._login_headers = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
             'accept-language': 'en-GB,en;q=0.5',
-            'accept-encoding': 'gzip, deflate, br, zstd',
             'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36',
         }
 
         # Headers for API requests (orders, positions, etc.)
+        # Note: Don't set accept-encoding manually - let requests handle it automatically
         self.headers = {
             'accept': 'application/json, text/plain, */*',
             'accept-language': 'en-GB,en;q=0.5',
-            'accept-encoding': 'gzip, deflate, br, zstd',
             'content-type': 'application/x-www-form-urlencoded',
             'origin': 'https://kite.zerodha.com',
             'referer': 'https://kite.zerodha.com/',
